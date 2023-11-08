@@ -22,17 +22,19 @@ from ConectaPucApp import views
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('api/forums/', views.ForumListView.as_view(), name='forum-list'),
     path('api/forums/create/', views.ForumCreateView.as_view(), name='forum-create'),
+    path('api/forums/', views.ForumListView.as_view(), name='forum-list'),
+    path('api/foruns/update/<int:pk>/', views.ForumUpdateView.as_view(), name='forum-update'),
     path('api/forums/delete/', views.ForumDeleteView.as_view(), name='forum-delete'),
-    path('api/postagens/', views.PostagemListView.as_view(), name='postagem-list'),
+    ###############
     path('api/postagens/create/', views.PostagemCreateView.as_view(), name='postagem-create'),
+    path('api/postagens/', views.PostagemListView.as_view(), name='postagem-list'),
+    path('api/postagens/update/<int:pk>/', views.PostagemUpdateView.as_view(), name='postagem-update'),
     path('api/postagens/delete/', views.PostagemDeleteView.as_view(), name='postagem-delete'),
-    path('api/postagens/<int:postagem_id>/comentarios/', views.ComentarioListView.as_view(), name='comentario-list'),
+    ###############
     path('api/comentarios/create/', views.ComentarioCreateView.as_view(), name='comentario-create'),
+    path('api/postagens/<int:postagem_id>/comentarios/', views.ComentarioListView.as_view(), name='comentario-list'),
+    path('api/comentarios/update/<int:pk>/', views.ComentarioUpdateView.as_view(), name='comentario-update'),
     path('api/comentarios/delete/', views.ComentarioDeleteView.as_view(), name='comentario-delete'),
-
-
-
-
+    ###############
 ]

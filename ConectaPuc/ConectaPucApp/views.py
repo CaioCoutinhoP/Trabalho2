@@ -1,3 +1,4 @@
+from django.http import Http404
 from ConectaPucApp.serializers import ConectaPucSerializer
 from rest_framework.views import APIView
 from .models import Postagem, Forum, Comentario
@@ -24,7 +25,24 @@ class ForumListView(APIView):#Mostrar forum
         forums = Forum.objects.all().order_by('nome')
         serializer = ConectaPucSerializer.ConectaPucForumSerializer(forums, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+class ForumUpdateView(APIView):
+    permission_classes = [IsAdminUserOrReadOnly]
+
+    def put(self, request, pk):
+        forum = self.get_forum(pk)
+
+        serializer = ConectaPucSerializer.ConectaPucForumSerializer(forum, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_forum(self, pk):
+        try:
+            return Forum.objects.get(pk=pk)
+        except Forum.DoesNotExist:
+            raise Http404
 class ForumCreateView(APIView):#Criar forum
     permission_classes = [IsAdminUserOrReadOnly]
     def post(self, request):
@@ -64,7 +82,30 @@ class PostagemCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+class PostagemUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, pk):
+        postagem = self.get_postagem(pk)
+        
+        # Verifique se o usuário é o autor da postagem
+        if postagem.autor != request.user:
+            return Response({"detail": "Você não tem permissão para atualizar esta postagem."}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = ConectaPucSerializer.ConectaPucPostagemSerializer(postagem, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_postagem(self, pk):
+        try:
+            return Postagem.objects.get(pk=pk)
+        except Postagem.DoesNotExist:
+            raise Http404
+        
 class PostagemDeleteView(APIView):
     authentication_classes = [TokenAuthentication]  # Use Token Authentication (ou outra autenticação de sua escolha)
     permission_classes = [IsAuthenticated]  # Apenas usuários autenticados podem acessar a visualização
@@ -89,11 +130,13 @@ class PostagemDeleteView(APIView):
             return Response({'error': f'Postagem(s) com ID(s) [{id_erro}] não encontrado(s)'}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
+    
 class ComentarioListView(APIView): #Lista comentarios
     def get(self, request, postagem_id):
         comentarios = Comentario.objects.filter(postagem__id=postagem_id).order_by('data_criacao')
         serializer = ConectaPucSerializer.ConectaPucComentarioSerializer(comentarios, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 class ComentarioCreateView(APIView): #cria comentarios
     def post(self, request):
         serializer = ConectaPucSerializer.ConectaPucComentarioSerializer(data=request.data)
@@ -101,6 +144,28 @@ class ComentarioCreateView(APIView): #cria comentarios
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ComentarioUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, pk):
+        comentario = self.get_comentario(pk)
+        
+        # Verifique se o usuário é o autor do comentário
+        if comentario.autor != request.user:
+            return Response({"detail": "Você não tem permissão para atualizar este comentário."}, status=status.HTTP_403_FORBIDDEN)
+
+        serializer = ConectaPucSerializer.ConectaPucComentarioSerializer(comentario, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_comentario(self, pk):
+        try:
+            return Comentario.objects.get(pk=pk)
+        except Comentario.DoesNotExist:
+            raise Http404
 class ComentarioDeleteView(APIView):
     authentication_classes = [TokenAuthentication]  # Use Token Authentication
     permission_classes = [IsAuthenticated]  # Apenas usuários autenticados podem acessar a visualização
