@@ -11,6 +11,8 @@ class Forum(models.Model):
 
     def __str__(self):
         return self.nome
+    
+    
 class PerfilUsuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     foto_perfil = models.ImageField(upload_to='perfil/', blank=True, null=True)

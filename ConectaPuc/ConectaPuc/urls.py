@@ -15,26 +15,46 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from ConectaPucApp import views
+from rest_framework import routers, permissions
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
+from drf_yasg.views import get_schema_view as yasg_schema_view
+from drf_yasg import openapi
 
-
+schema_view = yasg_schema_view(
+    openapi.Info(
+        title="API de exemplo",
+        default_version="v1",
+        description='Descrição da API de exemplo',
+        contact=openapi.Contact(email="paulosgmvianna@gmail.com"),
+        license=openapi.License(name='GNU GPLv3'),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('api/forums/create/', views.ForumCreateView.as_view(), name='forum-create'),
     path('api/forums/', views.ForumListView.as_view(), name='forum-list'),
     path('api/foruns/update/<int:pk>/', views.ForumUpdateView.as_view(), name='forum-update'),
-    path('api/forums/delete/', views.ForumDeleteView.as_view(), name='forum-delete'),
+    path('api/forums/delete/<int:pk>', views.ForumDeleteView.as_view(), name='forum-delete'),
     ###############
     path('api/postagens/create/', views.PostagemCreateView.as_view(), name='postagem-create'),
     path('api/postagens/', views.PostagemListView.as_view(), name='postagem-list'),
     path('api/postagens/update/<int:pk>/', views.PostagemUpdateView.as_view(), name='postagem-update'),
-    path('api/postagens/delete/', views.PostagemDeleteView.as_view(), name='postagem-delete'),
+    path('api/postagens/delete/<int:pk>', views.PostagemDeleteView.as_view(), name='postagem-delete'),
     ###############
     path('api/comentarios/create/', views.ComentarioCreateView.as_view(), name='comentario-create'),
     path('api/postagens/<int:postagem_id>/comentarios/', views.ComentarioListView.as_view(), name='comentario-list'),
     path('api/comentarios/update/<int:pk>/', views.ComentarioUpdateView.as_view(), name='comentario-update'),
-    path('api/comentarios/delete/', views.ComentarioDeleteView.as_view(), name='comentario-delete'),
+    path('api/comentarios/delete/<int:pk>', views.ComentarioDeleteView.as_view(), name='comentario-delete'),
     ###############
+    path('docs/', include_docs_urls(title='Documentação da API')),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema_swagger-ui'),
+    path('api/v1/', include(routers.DefaultRouter().urls)),
+    path('openapi', get_schema_view(title="API Para Forum", description="API para obter dados dos carros",),
+         name='openapi-schema'),
 ]

@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'ConectaPucApp',
+    'Contas',
+    'rest_framework.authtoken',
+    'django_rest_passwordreset',
+    "drf_yasg", #swagger
+    'coreapi'
 ]
 
 MIDDLEWARE = [
@@ -68,6 +73,15 @@ TEMPLATES = [
         },
     },
 ]
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication', 
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES' : (
+#         'rest_framework.permissions.IsAdminUser'
+#     )
+# }
 
 WSGI_APPLICATION = 'ConectaPuc.wsgi.application'
 

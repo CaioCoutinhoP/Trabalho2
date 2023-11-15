@@ -5,20 +5,43 @@ from ConectaPucApp.models import Postagem
 from ConectaPucApp.models import Comentario
 
 class ConectaPucSerializer: 
-    class ConectaPucForumSerializer(serializers.ModelSerializer):
+    class Forum(serializers.ModelSerializer):
         class Meta:
             model = Forum # nome do modelo
             fields = '__all__' # lista de campos
-    class ConectaPucPerfilUsuarioSerializer(serializers.ModelSerializer):
+
+
+    class Usuario(serializers.ModelSerializer):
         class Meta:
             model = PerfilUsuario # nome do modelo
             fields = '__all__' # lista de campos
-    class ConectaPucPostagemSerializer(serializers.ModelSerializer):
+
+
+    class Postagem(serializers.ModelSerializer):
         class Meta:
             model = Postagem # nome do modelo
             fields = '__all__' # lista de campos
-    class ConectaPucComentarioSerializer(serializers.ModelSerializer):
+
+    class PostagemUpdate(serializers.ModelSerializer):
+        class Meta:
+            model = Postagem
+            fields = ["titulo", "conteudo"]
+
+
+    class Comentario(serializers.ModelSerializer):
+        class Meta:
+            model = Comentario
+            fields = "__all__"
+
+
+    class ComentarioCreate(serializers.ModelSerializer):
         class Meta:
             model = Comentario # nome do modelo
-            fields = '__all__' # lista de campos
+            fields = ["autor", "postagem", "texto"] # lista de campos
+
+
+    class ComentarioUpdate(serializers.ModelSerializer):
+        class Meta:
+            model = Comentario
+            fields = ["texto"]
         
