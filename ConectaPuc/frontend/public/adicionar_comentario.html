@@ -1,0 +1,17 @@
+{% load static %}
+
+<html>
+<head><link rel="stylesheet" type="text/css" href="{% static 'css/adicionar_comentario.css' %}"></head>
+
+<h2>{{ postagem.titulo }}</h2>
+<p>{{ postagem.conteudo }}</p>
+
+<h1>Comentário</h1>
+<form method="post" class="comment-form">
+    <!-- Formulário de Comentários -->
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-submit">Adicionar Comentário</button>
+</form>
+
+</html>

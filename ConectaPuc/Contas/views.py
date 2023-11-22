@@ -6,12 +6,13 @@ from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 # Swagger
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from Contas.serializers import CreateUserSerializer, UserSerializer
 from rest_framework.views import APIView
+from rest_framework import status
 
 
 class CreateUserView(APIView):
@@ -50,20 +51,22 @@ class CustomAuthToken(ObtainAuthToken):
     view para gerenciamento de tokens de autenticação
     '''
     @swagger_auto_schema(
-        operation_summary='Obter o token de autenticação',
-        operation_description='Retorna o token em caso de sucesso na autenticação ou HTTP 401',
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'username' : openapi.Schema(type=openapi.TYPE_STRING),
-                'password' : openapi.Schema(type=openapi.TYPE_STRING),
-            },
-            required=['username', 'password', ],
-
-        ),
-        responses={
-            status.HTTP_200_OK: 'Token is returned.',
-            status.HTTP_401_UNAUTHORIZED: 'Unauthorized request.',
+        operation_description="Realiza logout do usuário, apagando o seu token",
+        operation_summary="Realiza logout",
+        security = [{"Token" :[]}],
+        manual_parameters=[
+            openapi.Parameter("Authorization", openapi.IN_HEADER,
+                type = openapi.TYPE_STRING, default="token ",
+                description='Token de autenticação no formato "token \<<i>valor do token</i>\>"',
+            ),
+        ],
+        request_body=None,
+        response={
+            status.HTTP_200_OK: 'User logged out',
+            status.HTTP_400_BAD_REQUEST: 'Bad request',
+            status.HTTP_401_UNAUTHORIZED: 'User not authenticated',
+            status.HTTP_403_FORBIDDEN: 'User not authorized to logout',
+            status.HTTP_500_INTERNAL_SERVER_ERROR: 'Erro no servidor',
         },
     )
 
@@ -99,7 +102,24 @@ class CustomAuthToken(ObtainAuthToken):
                 return Response({'token': token.key})
             return Response(status=status.HTTP_401_UNAUTHORIZED)
        
-    
+    def delete(self, request):
+        try:
+            token = request.META.get("HTTP_AUTHORIZATION").split(' ')[1]
+            token_obj = Token.objects.get(key=token)
+        except (Token.DoesNotExist, IndexError):
+            return Response({'msg' : 'Token não existe.'}, status=status.HTTP_400_BAD_REQUEST)
+        user = token_obj.user
+        if user.is_authenticated:
+            request.user = user
+            logout(request)
+            token = Token.objects.get(user=user)
+            token.delete()
+            return Response({"msg" : "Logout bem-sucedido."},
+                            status=status.HTTP_200_OK)
+        else:
+            return Response({"msg" : "Usuário não autenticado."},
+                            status=status.HTTP_403_FORBIDDEN)
+
 
 
 
