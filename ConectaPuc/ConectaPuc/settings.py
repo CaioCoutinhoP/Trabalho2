@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_rest_passwordreset',
     "drf_yasg", #swagger
-    'coreapi'
+    'coreapi',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'ConectaPuc.urls'
@@ -82,6 +84,10 @@ TEMPLATES = [
 #         'rest_framework.permissions.IsAdminUser'
 #     )
 # }
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8080",  # or the origin of your frontend
+
+]
 
 WSGI_APPLICATION = 'ConectaPuc.wsgi.application'
 

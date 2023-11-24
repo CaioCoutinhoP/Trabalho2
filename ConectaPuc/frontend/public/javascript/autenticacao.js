@@ -1,11 +1,12 @@
 "use strict";
 window.addEventListener('load', () => {
     // Verifica o username e coloca no cabeçalho da página
-    const token = localStorage.getItem('token');
-    fetch(backendAddress + 'accounts/token-auth/', {
+    const token = localStorage.getItem('token'); // Recupera o token de autenticação
+    const backendAddress = 'http://127.0.0.1:8000/';
+    fetch(backendAddress + 'contas/token-auth/', {
         method: 'GET',
         headers: {
-            'Authorization': "tokenKeyword" + token
+            'Authorization': 'Bearer' + token // Reenvia o token no cabeçalho HTTP
         }
     })
         .then(response => {
@@ -27,7 +28,7 @@ window.addEventListener('load', () => {
                 objDiv.classList.remove('invisivel');
                 objDiv.classList.add('visivel');
                 objDiv = document.getElementById('logged');
-                ~objDiv.classList.remove('visivel');
+                objDiv.classList.remove('visivel');
                 objDiv.classList.add('invisivel');
             }
             const spanElement = document.getElementById('identificacao');
@@ -35,6 +36,6 @@ window.addEventListener('load', () => {
         });
     })
         .catch(erro => {
-        console.log('[setLoggerUser] deu erro: ' + erro);
+        console.log('[setLoggedUser] deu erro: ' + erro);
     });
 });

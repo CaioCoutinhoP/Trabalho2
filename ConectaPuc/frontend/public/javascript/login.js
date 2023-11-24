@@ -5,7 +5,8 @@ onload = () => {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         const msg = document.getElementById('msg');
-        fetch(backendAddress + 'accounts/token-auth/', {
+        const backendAddress = 'http://127.0.0.1:8000/';
+        fetch(backendAddress + 'contas/token-auth/', {
             method: 'POST',
             body: JSON.stringify({
                 'username': username,
@@ -29,7 +30,7 @@ onload = () => {
             .then((data) => {
             const token = data.token;
             localStorage.setItem('token', token);
-            window.location.replace('loginDone.html');
+            window.location.replace('base.html');
         })
             .catch(erro => { console.log(erro); });
     });

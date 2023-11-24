@@ -4,7 +4,8 @@ onload = () => {
         const username: String = (document.getElementById('username') as HTMLInputElement).value;
         const password: String = (document.getElementById('password') as HTMLInputElement).value;
         const msg = (document.getElementById('msg') as HTMLDivElement);
-        fetch(backendAddress + 'accounts/token-auth/', {
+        const backendAddress = 'http://127.0.0.1:8000/';
+        fetch(backendAddress + 'contas/token-auth/', {
             method: 'POST',
             body: JSON.stringify({
                 'username': username,

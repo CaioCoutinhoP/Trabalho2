@@ -37,24 +37,26 @@ schema_view = yasg_schema_view(
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
-    path('api/forums/create/', views.ForumCreateView.as_view(), name='forum-create'),
-    path('api/forums/', views.ForumListView.as_view(), name='forum-list'),
+    path('api/foruns/create/', views.ForumCreateView.as_view(), name='forum-create'),
+    path('api/foruns/', views.ForumListView.as_view(), name='forum-list'),
     path('api/foruns/update/<int:pk>/', views.ForumUpdateView.as_view(), name='forum-update'),
-    path('api/forums/delete/<int:pk>', views.ForumDeleteView.as_view(), name='forum-delete'),
+    path('api/foruns/delete/<int:pk>', views.ForumDeleteView.as_view(), name='forum-delete'),
     ###############
     path('api/postagens/create/', views.PostagemCreateView.as_view(), name='postagem-create'),
     path('api/postagens/', views.PostagemListView.as_view(), name='postagem-list'),
     path('api/postagens/update/<int:pk>/', views.PostagemUpdateView.as_view(), name='postagem-update'),
     path('api/postagens/delete/<int:pk>', views.PostagemDeleteView.as_view(), name='postagem-delete'),
+    path('api/postagens/<int:postagem_id>/comentarios/', views.ComentarioListView.as_view(), name='comentario-list'),
     ###############
     path('api/comentarios/create/', views.ComentarioCreateView.as_view(), name='comentario-create'),
-    path('api/postagens/<int:postagem_id>/comentarios/', views.ComentarioListView.as_view(), name='comentario-list'),
     path('api/comentarios/update/<int:pk>/', views.ComentarioUpdateView.as_view(), name='comentario-update'),
     path('api/comentarios/delete/<int:pk>', views.ComentarioDeleteView.as_view(), name='comentario-delete'),
     ###############
     path('docs/', include_docs_urls(title='Documentação da API')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema_swagger-ui'),
     path('api/v1/', include(routers.DefaultRouter().urls)),
-    path('openapi', get_schema_view(title="API Para Forum", description="API para obter dados dos carros",),
+    path('openapi', get_schema_view(title="API Para Forum", description="API para obter dados dos Foruns",),
          name='openapi-schema'),
+    path('contas/', include('Contas.urls')),
+
 ]

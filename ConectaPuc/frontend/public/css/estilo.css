@@ -1,0 +1,9 @@
+.logged {
+    display: none;
+    }
+    .unlogged {
+    display: inline;
+    }
+    .mesmaLinha {
+    display: inline;
+    }
