@@ -39,7 +39,7 @@ class Postagem(models.Model):
         return self.titulo
     
 class Comentario(models.Model):
-    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    autor = models.TextField(max_length=200)
     postagem = models.ForeignKey(Postagem, on_delete=models.CASCADE)  # Substitua "Postagem" pelo nome do seu modelo de postagem
     texto = models.TextField()
     data_criacao = models.DateTimeField(auto_now_add=True)

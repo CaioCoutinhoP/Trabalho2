@@ -248,7 +248,7 @@ class ComentarioCreateView(APIView): #cria comentarios
             request_body=openapi.Schema(
                 type=openapi.TYPE_OBJECT,
                 properties={
-                    "autor" : openapi.Schema(description="Id do autor da postagem", type=openapi.TYPE_INTEGER),
+                    "autor" : openapi.Schema(description="Id do autor da postagem", type=openapi.TYPE_STRING),
                     "postagem" : openapi.Schema(description="Id da postagem a qual o comentário irá pertencer", type=openapi.TYPE_INTEGER),
                     "texto" : openapi.Schema(description="Conteúdo do comentário.", type=openapi.TYPE_STRING),
                 }

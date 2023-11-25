@@ -10,13 +10,11 @@ function loadPostAndComments() {
         response.json().then(function (datas) {
             datas.forEach(function (data) {
                 var forumatual = localStorage.getItem("id_forum")
+            
                 if (data.forum == forumatual) {
-                    displayPostDetails(data);    
-                    displayComments(data); 
+                    var postElement = displayPostDetails(data);
+                    getcomentariosById(data.id, postElement); // Passar postElement como argumento
                 }
-                
-                
-                               
             });
         }).catch(function (error) {
             console.error('Erro:', error);
@@ -26,11 +24,9 @@ function loadPostAndComments() {
 
 function displayPostDetails(post) {
     if (post) {
-        console.log(post)
         // Criar um novo elemento div para a postagem
         var postElement = document.createElement('div');
         postElement.classList.add('post');
-
         // Adicionar o título da postagem
         var titleElement = document.createElement('h2');
         titleElement.textContent = post.titulo;
@@ -50,40 +46,28 @@ function displayPostDetails(post) {
         var dateElement = document.createElement('p');
         dateElement.textContent = 'Data de Publicação: ' + post.data_postagem;
         postElement.appendChild(dateElement);
-        
-        var deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Apagar Postagem';
-        deleteButton.id = 'deleteButton'; // Defina um ID para o botão
-        deleteButton.onclick = function() {
-            delete_post(post.id);
-        };
-        postElement.appendChild(deleteButton);  
 
-
+        var createCommentButton = document.createElement('button');
+        createCommentButton.textContent = 'Criar Comentário';
+        createCommentButton.addEventListener('click', function() {
+            redirectToCreateComment(post.id); // Redirecionar para a tela de criação de comentários, passando o ID da postagem
+        });
+        postElement.appendChild(createCommentButton);
         // Inserir o novo elemento no DOM
         document.getElementById('postsContainer').appendChild(postElement);
+        return postElement;
+      
     }
 }
 
-function delete_post(postId) {
-    var token = localStorage.getItem("token");
-    fetch(backendAddress + 'api/postagens/delete/' + postId, {
-        method: "DELETE",
-        headers: {
-            'Authorization': 'Bearer ' + token 
-        }
-    })
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        if (data.success === "Post excluído com sucesso!") {
-            window.location.replace("index.html");
-        }
-    });
+
+function redirectToCreateComment(postId) {
+    // Armazenar o ID da postagem atual localmente (pode ser localStorage ou sessionStorage)
+    localStorage.setItem('currentPostId', postId);
+
+    // Redirecionar para a tela de criação de comentários
+    window.location.href = "adicionar_comentario.html";
 }
-
-
 
 function displayComments(comments) {
     if (comments && Array.isArray(comments)) {
@@ -94,29 +78,38 @@ function displayComments(comments) {
     }
 }
 
-
-
-
-    
-
-
+function getcomentariosById(id, postElement){
+    fetch(backendAddress + 'api/postagens/'+id+'/comentarios/', {
+        method: 'GET',
+    }).then(function (response) {
+        response.json().then(function (comentarios) {
+            comentarios.forEach(function (comentario) {
+                var commentElement = createCommentElement(comentario);
+                postElement.appendChild(commentElement); // Anexar ao elemento do post
+            });
+        }).catch(function (error) {
+            console.error('Erro:', error);
+        });
+    });
+}
 // Exemplo de uma função para criar elementos de comentário
 function createCommentElement(comment) {
+    console.log(comment)
     var commentDiv = document.createElement('div');
-    commentDiv.className = 'comment';
+    commentDiv.className = 'comments';
 
     // Crie elementos HTML para exibir os detalhes do comentário (por exemplo, autor, conteúdo, data, etc.)
     // Exemplo:
     var commentAuthor = document.createElement('p');
-    commentAuthor.textContent = 'Autor: ' + comment.author;
+    commentAuthor.textContent = 'Autor: ' + comment.autor;
     commentDiv.appendChild(commentAuthor);
 
     var commentContent = document.createElement('p');
-    commentContent.textContent = comment.content;
+    commentContent.textContent = comment.texto;
     commentDiv.appendChild(commentContent);
 
     var commentDate = document.createElement('p');
-    commentDate.textContent = 'Data: ' + comment.date;
+    commentDate.textContent = 'Data: ' + comment.data_criacao;
     commentDiv.appendChild(commentDate);
 
     return commentDiv;
