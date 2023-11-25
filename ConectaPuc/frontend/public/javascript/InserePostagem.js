@@ -12,10 +12,13 @@ function create_post() {
             const title = document.getElementById("title").value;
             const body = document.getElementById("body").value;
             const token = localStorage.getItem('token');
+            // const autor = localStorage.
 
             const formData = new FormData();
             formData.append('titulo', title);  // Corrigir o nome do campo para 'titulo'
             formData.append('conteudo', body);  // Corrigir o nome do campo para 'conteudo'
+            formData.append('autor', )
+
 
             const backendAddress = 'http://127.0.0.1:8000/';
 

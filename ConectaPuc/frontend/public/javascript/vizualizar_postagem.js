@@ -5,6 +5,7 @@ function loadPostAndComments() {
     // Substitua 'api/posts/{post_id}' pelo endpoint correto para obter uma postagem e seus comentários
     fetch(backendAddress + 'api/postagens/', {
         method: 'GET',
+        
     }).then(function (response) {
         response.json().then(function (data) {
             displayPostDetails(data.post);

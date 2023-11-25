@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Seu código existente para carregar os fóruns
-
+    var forumList
     // Exemplo de chamada a uma função para carregar os fóruns
     loadForums();
 });
@@ -35,6 +35,8 @@ function createForumElement(forum) {
     div1.appendChild(cardBody);
 
     var titlePost = document.createElement('h2');
+    titlePost.id = forum.id;
+
     titlePost.className = 'card-title';
     titlePost.textContent = forum.nome;
     cardBody.appendChild(titlePost);
@@ -49,7 +51,7 @@ function createForumElement(forum) {
 
     var footerPost = document.createElement('div');
     footerPost.className = 'card-footer text-muted text-bg-dark';
-    footerPost.textContent = 'Criado em ' + forum.data_criacao;
+    footerPost.textContent = 'Criado em ' + forum.autor;
 
     div1.appendChild(cardBody);
     div1.appendChild(footerPost);
@@ -61,6 +63,17 @@ function createForumElement(forum) {
 
     forumLink.addEventListener('click', function (event) {
         event.preventDefault();
+    
+        // Acessa o elemento que foi clicado
+        var clickedElement = event.target;
+    
+        console.log(clickedElement);
+        // Obtém o ID do elemento clicado
+        var clickedId = clickedElement.id;
+    
+        localStorage.setItem("id_forum", clickedId);
+    
+        // Redireciona para o href do forumLink
         window.location.href = forumLink.href;
     });
 
