@@ -27,7 +27,7 @@ class PerfilUsuario(models.Model):
         return self.usuario.username
 
 class Postagem(models.Model):
-    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+    autor = models.TextField(max_length=200)
     titulo = models.CharField(max_length=200)
     conteudo = models.TextField()
     data_postagem = models.DateTimeField(auto_now_add=True)

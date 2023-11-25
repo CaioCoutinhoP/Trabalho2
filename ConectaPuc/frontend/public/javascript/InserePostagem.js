@@ -12,40 +12,31 @@ function create_post() {
             const title = document.getElementById("title").value;
             const body = document.getElementById("body").value;
             const token = localStorage.getItem('token');
-            // const autor = localStorage.
-
-            const formData = new FormData();
-            formData.append('titulo', title);  // Corrigir o nome do campo para 'titulo'
-            formData.append('conteudo', body);  // Corrigir o nome do campo para 'conteudo'
-            formData.append('autor', )
+            const forumatual = localStorage.getItem('id_forum');
 
 
             const backendAddress = 'http://127.0.0.1:8000/';
 
-            fetch(backendAddress + "api/postagens/create/", {
+            fetch(backendAddress+ "/api/postagens/create/", {
                 method: "POST",
                 headers: {
                     'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'  // Adicionar este cabeçalho
                 },
-                body: formData,
+                body: JSON.stringify({  // Converter o corpo da requisição em uma string JSON
+                    "forum": parseInt(forumatual),
+                    "titulo": title,
+                    "conteudo": body,
+                    "autor": token
+                }),
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao criar postagem');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.response === "Post Criado com Sucesso!") {
-                    window.location.replace("vizualizar_postagem.html");
-                } else {
-                    throw new Error("Falha na criação do post");
-                }
-            })
+
             .catch(error => {
                 console.error(error);
                 msg.innerHTML = "Erro durante a criação do post. Por favor, tente novamente.";
             });
+            window.location.href = "visualizar_postagens.html";
+
         });
     }
 }

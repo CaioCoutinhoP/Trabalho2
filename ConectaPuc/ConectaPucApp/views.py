@@ -148,7 +148,7 @@ class PostagemCreateView(APIView):
                 "forum" : openapi.Schema(description="Id do Fórum", type=openapi.TYPE_INTEGER),
                 "titulo" : openapi.Schema(description="Título da Postagem", type=openapi.TYPE_STRING),
                 "conteudo" : openapi.Schema(description="Conteúdo da Postagem", type=openapi.TYPE_STRING),
-                "autor" : openapi.Schema(description="Autor da Postagem", type=openapi.TYPE_INTEGER),
+                "autor" : openapi.Schema(description="Autor da Postagem", type=openapi.TYPE_STRING),
             }
         ),
         responses={201: ConectaPucSerializer.Postagem()}

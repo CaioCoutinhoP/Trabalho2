@@ -7,9 +7,17 @@ function loadPostAndComments() {
         method: 'GET',
         
     }).then(function (response) {
-        response.json().then(function (data) {
-            displayPostDetails(data.post);
-            displayComments(data.comments);
+        response.json().then(function (datas) {
+            datas.forEach(function (data) {
+                var forumatual = localStorage.getItem("id_forum")
+                if (data.forum == forumatual) {
+                    displayPostDetails(data);    
+                    displayComments(data); 
+                }
+                
+                
+                               
+            });
         }).catch(function (error) {
             console.error('Erro:', error);
         });
@@ -18,13 +26,63 @@ function loadPostAndComments() {
 
 function displayPostDetails(post) {
     if (post) {
-        document.getElementById('title').textContent = post.title || '';
-        document.getElementById('postTitle').textContent = post.title || '';
-        document.getElementById('postContent').textContent = post.content || '';
-        document.getElementById('postAuthor').textContent = 'Autor: ' + (post.author || '');
-        document.getElementById('postDate').textContent = 'Data de Publicação: ' + (post.date || '');
+        console.log(post)
+        // Criar um novo elemento div para a postagem
+        var postElement = document.createElement('div');
+        postElement.classList.add('post');
+
+        // Adicionar o título da postagem
+        var titleElement = document.createElement('h2');
+        titleElement.textContent = post.titulo;
+        postElement.appendChild(titleElement);
+
+        // Adicionar o conteúdo da postagem
+        var contentElement = document.createElement('p');
+        contentElement.textContent = post.conteudo;
+        postElement.appendChild(contentElement);
+
+        // Adicionar o autor da postagem
+        var authorElement = document.createElement('p');
+        authorElement.textContent = 'Autor: ' + post.autor;
+        postElement.appendChild(authorElement);
+
+        // Adicionar a data de publicação
+        var dateElement = document.createElement('p');
+        dateElement.textContent = 'Data de Publicação: ' + post.data_postagem;
+        postElement.appendChild(dateElement);
+        
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Apagar Postagem';
+        deleteButton.id = 'deleteButton'; // Defina um ID para o botão
+        deleteButton.onclick = function() {
+            delete_post(post.id);
+        };
+        postElement.appendChild(deleteButton);  
+
+
+        // Inserir o novo elemento no DOM
+        document.getElementById('postsContainer').appendChild(postElement);
     }
 }
+
+function delete_post(postId) {
+    var token = localStorage.getItem("token");
+    fetch(backendAddress + 'api/postagens/delete/' + postId, {
+        method: "DELETE",
+        headers: {
+            'Authorization': 'Bearer ' + token 
+        }
+    })
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        if (data.success === "Post excluído com sucesso!") {
+            window.location.replace("index.html");
+        }
+    });
+}
+
 
 
 function displayComments(comments) {
@@ -35,6 +93,11 @@ function displayComments(comments) {
         });
     }
 }
+
+
+
+
+    
 
 
 // Exemplo de uma função para criar elementos de comentário
