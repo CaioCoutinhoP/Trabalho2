@@ -1,57 +1,42 @@
-{% load static%}
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/vizualizarEcriar.css' %}">
-    </head>
-<h1>{{ forum.nome }}</h1>
-<h2>descricao: {{ forum.descricao }}</h2>
-<div>
-    <a href="{% url 'sec-home'  %}">Tela inicial</a>
-</div>
-<!-- Formulário de criação de postagem -->
-<form method="post" class="postagem-form">
-    {% csrf_token %}
-    {{ form.titulo.label_tag }} {{ form.titulo }}
-    {{ form.conteudo.label_tag }} {{ form.conteudo }}
-    <button type="submit" class="btn-submit">Criar Postagem</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- Exibir postagens existentes -->
-<ul>
-    {% for postagem in postagens %}
-    <li>
-        <h2>{{ postagem.titulo }}</h2>
-        <p>{{ postagem.conteudo }}</p>
-        <small>Postado por: {{ postagem.autor }} em {{ postagem.data_postagem }}</small>
-        {% if user == postagem.autor or user.is_superuser %}
-        <a href="{% url 'editar_postagem' postagem.id %}">Editar Postagem</a>
-        <a href="{% url 'excluir_postagem' postagem.id %}">Excluir Postagem</a>
-        <a href="{% url 'adicionar_comentario' postagem.id %}">Comentario</a>
-        {% endif %}
-        {% if user != postagem.autor and not user.is_superuser %}
-        <a href="{% url 'adicionar_comentario' postagem.id %}">Comentario</a>
-        {% endif %}
+<head>
+    <title id="title"></title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    </li>
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 
-    <ul class="comentarios">
-        {% for comentario in postagem.comentario_set.all %}
-        <li>
-            <p>{{ comentario.autor }} comentou em {{ comentario.data_criacao }}:</p>
-            <p>{{ comentario.texto }}</p>
-            <!-- ... links de ação para comentários ... -->
-            {% if user == comentario.autor %}
-            <a href="{% url 'excluir_comentario' comentario.id %}">Excluir Comentário</a>
-            <a href="{% url 'editar_comentario' comentario.id %}">Editar Comentário</a>
-            
-            {% endif %}
-        </li>
-        {% empty %}
-            <p>Ainda não há comentários para esta postagem.</p>
-        {% endfor %}
-    </ul>
-</li>
-{% endfor %}
-</ul>
+    <script src="javascript/constantes.js"></script>
+    <script src="javascript/autenticacao.js"></script>
+    <script type="module" src="javascript/vizualizar_postagem.js"></script>
+    <link rel="stylesheet" href="../public/css/blog_post_detail.css">
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="row">
+                <!-- Detalhes da Postagem -->
+                <div id='postDetails'>
+                    <h1 id="postTitle"></h1>
+                    <p id="postContent"></p>
+                    <p id="postAuthor"></p>
+                    <p id="postDate"></p>
+                    <!-- Botão para Inserir Postagem -->
+                </div>
+                <a href="criar_postagem.html">InserirPostagem</a>
+                <!-- Comentários da Postagem -->
+                <div id='comments'>
+                    <!-- Os comentários serão adicionados aqui dinamicamente pelo JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
 
 </html>

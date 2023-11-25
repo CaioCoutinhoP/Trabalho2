@@ -1,13 +1,25 @@
-{% load static%}
-{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<html>
-    <head><link rel="stylesheet" type="text/css" href="{% static 'css/criar_forum.css' %}"></head>
-    <h2>Criar Fórum</h2>
-    <form method="post" class="create-forum-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn-submit">Criar Fórum</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Criação de Fóruns">
+    <title>Criação de Fóruns</title>
+    <script src="javascript/InsereForum.js" defer></script>
+</head>
+
+<body>
+    <iframe src="cabecalho.html" frameborder="0" width="100%" height="50" id="cabecalho"></iframe>
+    <h1>Criação de Fóruns</h1>
+    <form action="" method="post" id="criar-forum-form">
+        <label for="nome">Nome do Fórum:</label>
+        <input type="text" name="nome" required>
+        <label for="descricao">Descrição do Fórum:</label>
+        <textarea name="descricao" required></textarea>
+
+        <button type="submit">Criar Fórum</button>
     </form>
+
+</body>
+
 </html>
-{% endblock %}

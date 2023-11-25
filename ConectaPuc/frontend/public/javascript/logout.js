@@ -3,7 +3,7 @@ onload = (eventon) => {
     document.getElementById('logout').addEventListener('click', (evento) => {
         const token = localStorage.getItem('token');
         const backendAddress = 'http://127.0.0.1:8000/';
-        fetch(backendAddress + 'contas/token-auth/', {
+        fetch(backendAddress + 'contas/token-auth', {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + token,

@@ -1,41 +1,46 @@
-"use strict";
 window.addEventListener('load', () => {
-    // Verifica o username e coloca no cabeçalho da página
-    const token = localStorage.getItem('token'); // Recupera o token de autenticação
+    const token = localStorage.getItem('token');
     const backendAddress = 'http://127.0.0.1:8000/';
-    fetch(backendAddress + 'contas/token-auth/', {
+    
+    fetch(backendAddress + 'contas/token-auth', {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer' + token // Reenvia o token no cabeçalho HTTP
+            'Authorization': 'Bearer ' + token
         }
     })
-        .then(response => {
+    .then(response => {
         response.json().then(data => {
             const usuario = data;
-            if (response.ok) {
-                // token enviado no cabeçalho foi aceito pelo servidor
-                let objDiv = document.getElementById('logged');
-                objDiv.classList.remove('invisivel');
-                objDiv.classList.add('visivel');
-                objDiv = document.getElementById('unlogged');
-                objDiv.classList.remove('visivel');
-                objDiv.classList.add('invisivel');
-            }
-            else {
-                // token enviado no cabeçalho foi rejeitado pelo servidor
-                usuario.username = 'visitante';
-                let objDiv = document.getElementById('unlogged');
-                objDiv.classList.remove('invisivel');
-                objDiv.classList.add('visivel');
-                objDiv = document.getElementById('logged');
-                objDiv.classList.remove('visivel');
-                objDiv.classList.add('invisivel');
-            }
+
+            // Verifica se os elementos existem no DOM antes de acessar propriedades
+            const objLogged = document.getElementById('logged');
+            const objUnlogged = document.getElementById('unlogged');
             const spanElement = document.getElementById('identificacao');
-            spanElement.innerHTML = usuario.username;
+
+            if (response.ok) {
+                // Exibe ou oculta os elementos conforme necessário
+                if (objLogged && objUnlogged) {
+                    objLogged.classList.remove('invisivel');
+                    objLogged.classList.add('visivel');
+                    objUnlogged.classList.remove('visivel');
+                    objUnlogged.classList.add('invisivel');
+                }
+            } else {
+                if (objLogged && objUnlogged) {
+                    objUnlogged.classList.remove('invisivel');
+                    objUnlogged.classList.add('visivel');
+                    objLogged.classList.remove('visivel');
+                    objLogged.classList.add('invisivel');
+                }
+                usuario.username = 'visitante';
+            }
+
+            if (spanElement) {
+                spanElement.innerHTML = usuario.username;
+            }
         });
     })
-        .catch(erro => {
+    .catch(erro => {
         console.log('[setLoggedUser] deu erro: ' + erro);
     });
 });

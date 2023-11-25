@@ -84,10 +84,9 @@ TEMPLATES = [
 #         'rest_framework.permissions.IsAdminUser'
 #     )
 # }
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8080",  # or the origin of your frontend
-
-]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 WSGI_APPLICATION = 'ConectaPuc.wsgi.application'
 

@@ -1,36 +1,25 @@
-{% block content %}
-{% load static %}
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet"
-        href="{% static 'css/lista_Foruns.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Listagem de Fóruns</title>
+    <link rel="stylesheet" href="caminho_para_o_seu_css.css">
+    <script src="javascript/ListaForum.js" defer></script>
 </head>
-<h2>Fóruns</h2>
 
-<h2><a href="{% url 'sec-home' %}">Conta</a></h2>
+<body>
+    <iframe src="cabecalho.html" frameborder="0" width="100%" height="50" id="cabecalho"></iframe>
+    <a href="criar_forum.html">Cria forum</a>
+    <h1>Listagem de Fóruns</h1>
 
-<h3>
-    {% if user.is_superuser %}
-        <a href="{% url 'criar_forum' %}"> Criar Fórum</a>
-
-    {% endif %}
-</h3>
-
-<ul>
-    {% for forum in foruns %}
-    <li><a href="{% url 'visualizar_e_criar_postagens' forum.id %}">{{ forum.nome }}</a>
-        {% if user == forum.autor %}
-        <a href="{% url 'editar_forum' forum.id %}">Editar</a>
-       <a href="{% url 'excluir_forum' forum.id %}">Excluir</a>
-       {% endif %}
+    <div id="forumList" class="container mt-2">
+        <!-- Os fóruns serão adicionados aqui dinamicamente pelo JavaScript -->
+    </div>
     
-    </li>
- 
-    {% endfor %}
-</ul>
-{% endblock %}
+    <!-- Adicione aqui outros elementos HTML conforme necessário -->
+
+</body>
+
 </html>
