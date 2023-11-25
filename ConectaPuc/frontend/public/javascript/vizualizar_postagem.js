@@ -78,6 +78,29 @@ function displayComments(comments) {
     }
 }
 
+function getUsernameByToken(autor) {
+    fetch(backendAddress + 'contas/token-auth', {
+        method: 'GET',
+        headers: {
+            'Authorization': "token " + autor
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();  // Converte a resposta em JSON
+    })
+    .then(data => {
+        console.log('username:', data.username);  // Aqui você acessa o username
+        return data.username;  // Retorna o username
+    })
+    .catch(error => {
+        console.error('There has been a problem with your fetch operation:', error);
+    });
+}
+
+
 function getcomentariosById(id, postElement){
     fetch(backendAddress + 'api/postagens/'+id+'/comentarios/', {
         method: 'GET',
@@ -94,7 +117,6 @@ function getcomentariosById(id, postElement){
 }
 // Exemplo de uma função para criar elementos de comentário
 function createCommentElement(comment) {
-    console.log(comment)
     var commentDiv = document.createElement('div');
     commentDiv.className = 'comments';
 
