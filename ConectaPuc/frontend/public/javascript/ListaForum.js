@@ -120,7 +120,7 @@ function createForumElement(forum) {
         if (!response.ok) {
             throw new Error('Falha ao deletar o fórum com ID: ' + forumId);
         }
-        return response.text(); 
+        return response.text(); // ou .text() se não houver retorno JSON
     })
     .then(data => {
         console.log('Fórum deletado com sucesso:', data);

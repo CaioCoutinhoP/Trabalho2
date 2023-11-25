@@ -44,6 +44,36 @@ async function displayPostDetails(post) {
         dateElement.textContent = 'Data de Publicação: ' + post.data_postagem;
         postElement.appendChild(dateElement);
 
+        var deletePostagemButton = document.createElement("button");
+        deletePostagemButton.style = "text0decoration: none !important";
+        deletePostagemButton.textContent = "Excluir Postagem";
+        deletePostagemButton.id = post.id;
+        postElement.appendChild(deletePostagemButton);
+
+        deletePostagemButton.addEventListener('click', function(event) {
+            event.preventDefault();
+        
+            var postagemId = post.id;
+            console.log(postagemId)
+        
+            fetch("http://localhost:8000/api/postagens/delete/"+ postagemId, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Falha ao deletar o fórum com ID: ' + postagemId);
+                }
+                return response.text(); // ou .text() se não houver retorno JSON
+            })
+            .then(data => {
+                console.log('Fórum deletado com sucesso:', data);
+                // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
+            })
+            .catch(error => console.error('Erro:', error));
+        
+        });
+
         var createCommentButton = document.createElement('button');
         createCommentButton.textContent = 'Criar Comentário';
         createCommentButton.addEventListener('click', function() {
@@ -53,8 +83,9 @@ async function displayPostDetails(post) {
         // Inserir o novo elemento no DOM
         document.getElementById('postsContainer').appendChild(postElement);
         return postElement;
-      
+ 
     }
+    
 }
 
 
@@ -130,6 +161,13 @@ async function createCommentElement(comment) {
     var commentDate = document.createElement('p');
     commentDate.textContent = 'Data: ' + comment.data_criacao;
     commentDiv.appendChild(commentDate);
+
+    var deleteComentarioButton = document.createElement("button");
+    deleteComentarioButton.style = "text0decoration: none !important";
+    deleteComentarioButton.textContent = "Excluir Comentario";
+    deleteComentarioButton.id = comment.id;
+    commentDiv.appendChild(deleteComentarioButton);
+
 
     return commentDiv;
 }
