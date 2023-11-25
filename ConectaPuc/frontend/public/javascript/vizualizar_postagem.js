@@ -1,28 +1,25 @@
 // Exemplo de uma função para carregar detalhes da postagem e comentários
-function loadPostAndComments() {
+async function loadPostAndComments() {
     const backendAddress = 'http://127.0.0.1:8000/';
 
-    // Substitua 'api/posts/{post_id}' pelo endpoint correto para obter uma postagem e seus comentários
-    fetch(backendAddress + 'api/postagens/', {
-        method: 'GET',
-        
-    }).then(function (response) {
-        response.json().then(function (datas) {
-            datas.forEach(function (data) {
-                var forumatual = localStorage.getItem("id_forum")
-            
-                if (data.forum == forumatual) {
-                    var postElement = displayPostDetails(data);
-                    getcomentariosById(data.id, postElement); // Passar postElement como argumento
-                }
-            });
-        }).catch(function (error) {
-            console.error('Erro:', error);
-        });
-    });
+    try {
+        let response = await fetch(backendAddress + 'api/postagens/', { method: 'GET' });
+        let datas = await response.json();
+
+        for (const data of datas) {
+            var forumatual = localStorage.getItem("id_forum");
+
+            if (data.forum == forumatual) {
+                var postElement = await displayPostDetails(data);
+                await getcomentariosById(data.id, postElement);
+            }
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+    }
 }
 
-function displayPostDetails(post) {
+async function displayPostDetails(post) {
     if (post) {
         // Criar um novo elemento div para a postagem
         var postElement = document.createElement('div');
@@ -39,7 +36,7 @@ function displayPostDetails(post) {
 
         // Adicionar o autor da postagem
         var authorElement = document.createElement('p');
-        authorElement.textContent = 'Autor: ' + post.autor;
+        authorElement.textContent = 'Autor: ' + await getUsernameByToken(post.autor);
         postElement.appendChild(authorElement);
 
         // Adicionar a data de publicação
@@ -69,17 +66,18 @@ function redirectToCreateComment(postId) {
     window.location.href = "adicionar_comentario.html";
 }
 
-function displayComments(comments) {
+async function displayComments(comments) {
     if (comments && Array.isArray(comments)) {
-        comments.forEach(function (comment) {
-            var commentElement = createCommentElement(comment);
+        for (const comment of comments) {
+            var commentElement = await createCommentElement(comment);
             document.getElementById('comments').appendChild(commentElement);
-        });
+        }
     }
 }
 
+
 function getUsernameByToken(autor) {
-    fetch(backendAddress + 'contas/token-auth', {
+    return fetch(backendAddress + 'contas/token-auth', {
         method: 'GET',
         headers: {
             'Authorization': "token " + autor
@@ -91,39 +89,38 @@ function getUsernameByToken(autor) {
         }
         return response.json();  // Converte a resposta em JSON
     })
-    .then(data => {
-        console.log('username:', data.username);  // Aqui você acessa o username
-        return data.username;  // Retorna o username
-    })
+    .then(data => data.username) // Retorna o nome do usuário
     .catch(error => {
         console.error('There has been a problem with your fetch operation:', error);
     });
 }
 
 
-function getcomentariosById(id, postElement){
-    fetch(backendAddress + 'api/postagens/'+id+'/comentarios/', {
-        method: 'GET',
-    }).then(function (response) {
-        response.json().then(function (comentarios) {
-            comentarios.forEach(function (comentario) {
-                var commentElement = createCommentElement(comentario);
-                postElement.appendChild(commentElement); // Anexar ao elemento do post
-            });
-        }).catch(function (error) {
-            console.error('Erro:', error);
+async function getcomentariosById(id, postElement){
+    try {
+        let response = await fetch(backendAddress + 'api/postagens/' + id + '/comentarios/', {
+            method: 'GET',
         });
-    });
+        let comentarios = await response.json();
+
+        for (const comentario of comentarios) {
+            var commentElement = await createCommentElement(comentario);
+            postElement.appendChild(commentElement);
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+    }
 }
+
 // Exemplo de uma função para criar elementos de comentário
-function createCommentElement(comment) {
+async function createCommentElement(comment) {
     var commentDiv = document.createElement('div');
     commentDiv.className = 'comments';
 
     // Crie elementos HTML para exibir os detalhes do comentário (por exemplo, autor, conteúdo, data, etc.)
     // Exemplo:
     var commentAuthor = document.createElement('p');
-    commentAuthor.textContent = 'Autor: ' + comment.autor;
+    commentAuthor.textContent = 'Autor: ' + await getUsernameByToken(comment.autor);
     commentDiv.appendChild(commentAuthor);
 
     var commentContent = document.createElement('p');

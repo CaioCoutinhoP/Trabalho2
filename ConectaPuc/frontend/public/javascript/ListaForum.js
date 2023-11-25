@@ -107,33 +107,35 @@ function createForumElement(forum) {
 
     // Event listener for the delete link
     deleteForumButton.addEventListener('click', function(event) {
-        
-        const backendAddress = 'http://127.0.0.1:8000';
-        event.preventDefault();
-    
-        var forumId = this.id;
-        var apiUrl = '/api/forum/delete/' + forumId; // Update with your API's URL
-    
-        console.log(backendAddress + apiUrl)
-        fetch(backendAddress + apiUrl, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json', }
-        })
-        // .then(response => {
-        //     if (response.status === 204) {
-        //         console.log('Forum deleted successfully');
-        //         // Additional code to update UI, like removing the forum element
-        //     } else {
-        //         console.error('Error deleting forum');
-        //         // Handle errors, show messages to the user, etc.
-        //     }
-        // })
-        .catch(error => console.error('Error:', error));
-    });
+    event.preventDefault();
+
+    var forumId = this.id;
+    console.log(forumId)
+
+    fetch("http://localhost:8000/api/foruns/delete/"+ forumId, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Falha ao deletar o fórum com ID: ' + forumId);
+        }
+        return response.text(); 
+    })
+    .then(data => {
+        console.log('Fórum deletado com sucesso:', data);
+        // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
+    })
+    .catch(error => console.error('Erro:', error));
+    location.reload();
+
+});
 
     forumLink.appendChild(div1);
     cardBody.appendChild(editForumLink);
     cardBody.appendChild(deleteForumButton);
+
+
     
 
     return forumLink;
