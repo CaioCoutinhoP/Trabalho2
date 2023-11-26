@@ -43,13 +43,32 @@ async function displayPostDetails(post) {
         var dateElement = document.createElement('p');
         dateElement.textContent = 'Data de Publicação: ' + post.data_postagem;
         postElement.appendChild(dateElement);
-
+        
         var deletePostagemButton = document.createElement("button");
         deletePostagemButton.style = "text0decoration: none !important";
         deletePostagemButton.textContent = "Excluir Postagem";
         deletePostagemButton.id = post.id;
         postElement.appendChild(deletePostagemButton);
+        console.log(post)
+        var AtualizaPostagem = document.createElement("button");
+        AtualizaPostagem.style = "text0decoration: none !important";
+        AtualizaPostagem.textContent = "Atualizar Postagem";
+        AtualizaPostagem.id = post.id;
+        postElement.appendChild(AtualizaPostagem);
 
+        AtualizaPostagem.addEventListener("click", function (event) {
+            event.preventDefault();
+            
+            var clickedElement = event.target;
+    
+            console.log(clickedElement);
+    
+            var clickedId = clickedElement.id;
+    
+            localStorage.setItem("currentPostId", clickedId);
+            
+            window.location.href = 'editar_postagem.html';
+        });
         deletePostagemButton.addEventListener('click', function(event) {
             event.preventDefault();
         
@@ -71,6 +90,7 @@ async function displayPostDetails(post) {
                 // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
             })
             .catch(error => console.error('Erro:', error));
+            window.reload
         
         });
 
@@ -83,7 +103,8 @@ async function displayPostDetails(post) {
         // Inserir o novo elemento no DOM
         document.getElementById('postsContainer').appendChild(postElement);
         return postElement;
- 
+        
+  
     }
     
 }
@@ -162,16 +183,65 @@ async function createCommentElement(comment) {
     commentDate.textContent = 'Data: ' + comment.data_criacao;
     commentDiv.appendChild(commentDate);
 
+    var atualizarComentarioButton = document.createElement("button");
+    atualizarComentarioButton.style = "text0decoration: none !important";
+    atualizarComentarioButton.textContent = "Atualizar Comentario";
+    atualizarComentarioButton.id = comment.id;
+    commentDiv.appendChild(atualizarComentarioButton);
+
+    atualizarComentarioButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        
+        var clickedElement = event.target;
+
+        console.log(clickedElement);
+
+        var clickedId = clickedElement.id;
+
+        localStorage.setItem("currentcomentariotId", clickedId);
+        
+        window.location.href = 'editar_comentario.html';
+    });
+
     var deleteComentarioButton = document.createElement("button");
     deleteComentarioButton.style = "text0decoration: none !important";
     deleteComentarioButton.textContent = "Excluir Comentario";
     deleteComentarioButton.id = comment.id;
     commentDiv.appendChild(deleteComentarioButton);
 
+    deleteComentarioButton.addEventListener('click', function(event) {
+        event.preventDefault();
+    
+        var comentarioId = comment.id;
+        console.log(comment.id)
+    
+        fetch("http://localhost:8000/api/comentarios/delete/"+ comentarioId, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Falha ao deletar o fórum com ID: ' + comentarioId);
+            }
+            return response.text(); // ou .text() se não houver retorno JSON
+        })
+        .then(data => {
+            console.log('Comentario deletado com sucesso:', data);
+            // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
+        })
+        .catch(error => console.error('Erro:', error));
+        location.reload();
+
+    
+    });
+
 
     return commentDiv;
 }
+function AutorizacaoUsuario(){
+    token = localStorage.getItem("token")
 
+
+}
 // Carregue detalhes da postagem e comentários quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function () {
     loadPostAndComments();

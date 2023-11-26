@@ -184,8 +184,6 @@ class PostagemUpdateView(APIView):
         postagem = self.get_postagem(pk)
         
         # Verifique se o usuário é o autor da postagem
-        if postagem.autor != request.user:
-            return Response({"detail": "Você não tem permissão para atualizar esta postagem."}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = ConectaPucSerializer.PostagemUpdate(postagem, data=request.data)
         if serializer.is_valid():
@@ -217,12 +215,8 @@ class PostagemDeleteView(APIView):
     def delete(self, request, pk=None):
         try:
             postagem = Postagem.objects.get(id=pk)
-            # Verifique se o usuário atual é o autor da postagem
-            if postagem.autor == request.user:
-                postagem.delete()
-                return Response({'message' : "Postagem excluída com sucesso."}, status=status.HTTP_204_NO_CONTENT)
-            else:
-                return Response({'error': 'Você não tem permissão para excluir esta postagem.'}, status=status.HTTP_403_FORBIDDEN)
+            postagem.delete()
+            return Response({'message' : "Postagem excluída com sucesso."}, status=status.HTTP_204_NO_CONTENT)
 
         except Postagem.DoesNotExist:
             return Response({'error': f'Postagem com ID [{pk}] não foi encontrada'},
@@ -276,10 +270,6 @@ class ComentarioUpdateView(APIView):
     )
     def put(self, request, pk):
         comentario = self.get_comentario(pk)
-        
-        # Verifique se o usuário é o autor do comentário
-        if comentario.autor != request.user:
-            return Response({"detail": "Você não tem permissão para atualizar este comentário."}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = ConectaPucSerializer.ComentarioUpdate(comentario, data=request.data)
         if serializer.is_valid():
@@ -309,11 +299,11 @@ class ComentarioDeleteView(APIView):
             comentario = Comentario.objects.get(id=pk)
 
             # Verifique se o usuário atual é o autor do comentário
-            if comentario.autor == request.user or request.user.is_superuser():
-                comentario.delete()
-                return Response({'message' : "Comentário excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
-            else:
-                return Response({'error': 'Você não tem permissão para excluir este comentário.'}, status=status.HTTP_403_FORBIDDEN)
+            #if comentario.autor == request.user or request.user.is_superuser():
+            comentario.delete()
+            return Response({'message' : "Comentário excluído com sucesso."}, status=status.HTTP_204_NO_CONTENT)
+            #else:
+                #return Response({'error': 'Você não tem permissão para excluir este comentário.'}, status=status.HTTP_403_FORBIDDEN)
 
         except Comentario.DoesNotExist:
             return Response({'error': f'Comentário(s) com ID(s) [{pk}] não encontrado(s)'}, status=status.HTTP_404_NOT_FOUND)

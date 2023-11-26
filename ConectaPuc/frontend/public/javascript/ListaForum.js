@@ -52,7 +52,6 @@ function createForumElement(forum) {
 
     var footerPost = document.createElement('div');
     footerPost.className = 'card-footer text-muted text-bg-dark';
-    footerPost.textContent = 'Criado por ' + forum.autor;
 
     var editForumLink = document.createElement("a");
     editForumLink.style = "text-decoration: none !important";

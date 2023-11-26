@@ -1,19 +1,32 @@
-{%load static%}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <head><link rel="stylesheet" type="text/css" href="{% static 'css/editar_postagem.css' %}"></head>
 
-    <title>Editar Postagem</title>
+<head>
+    <script src="javascript/AtualizaPostagem.js"></script>
+    <script src="javascript/constantes.js"></script>
 </head>
+
 <body>
-    <h1>Editar Postagem</h1>
-    <form method="post" class="edit-post-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Salvar Edições</button>
+    <iframe src="cabecalho.html" frameborder="0" width="100%" height="50" id="cabecalho"></iframe>
+    <h1>Atualizando a postagem #<span id="id"></span></h1>
+    <form id="meuFormulario">
+        <input type="hidden" name="id" id="id">
+        
+        <div>
+            <label for="nome">Novo titulo da postagem:</label>
+            <input type="text" name="nome" id="nome" required>
+        </div>
+        
+        <div>
+            <label for="descricao">Novo Conteudo da postagem:</label>
+            <textarea name="descricao" id="descricao" rows="5" cols="50" required></textarea>
+        </div>
+        
+        <button type="button" id="atualiza">Atualizar</button>
     </form>
+    <div id="mensagem"></div>
+
+    <!-- Adicione aqui outros elementos HTML conforme necessário -->
 </body>
+
 </html>
