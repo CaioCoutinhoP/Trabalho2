@@ -43,56 +43,59 @@ async function displayPostDetails(post) {
         var dateElement = document.createElement('p');
         dateElement.textContent = 'Data de Publicação: ' + post.data_postagem;
         postElement.appendChild(dateElement);
-        
-        var deletePostagemButton = document.createElement("button");
-        deletePostagemButton.style = "text0decoration: none !important";
-        deletePostagemButton.textContent = "Excluir Postagem";
-        deletePostagemButton.id = post.id;
-        postElement.appendChild(deletePostagemButton);
-        console.log(post)
-        var AtualizaPostagem = document.createElement("button");
-        AtualizaPostagem.style = "text0decoration: none !important";
-        AtualizaPostagem.textContent = "Atualizar Postagem";
-        AtualizaPostagem.id = post.id;
-        postElement.appendChild(AtualizaPostagem);
 
-        AtualizaPostagem.addEventListener("click", function (event) {
-            event.preventDefault();
+        let currentUsername = await getCurrentUsername();
+        let postAuthor = await getUsernameByToken(post.autor);
+        if (currentUsername === postAuthor) {
+            var deletePostagemButton = document.createElement("button");
+            deletePostagemButton.style = "text0decoration: none !important";
+            deletePostagemButton.textContent = "Excluir Postagem";
+            deletePostagemButton.id = post.id;
+            postElement.appendChild(deletePostagemButton);
             
-            var clickedElement = event.target;
-    
-            console.log(clickedElement);
-    
-            var clickedId = clickedElement.id;
-    
-            localStorage.setItem("currentPostId", clickedId);
+            var AtualizaPostagem = document.createElement("button");
+            AtualizaPostagem.style = "text0decoration: none !important";
+            AtualizaPostagem.textContent = "Atualizar Postagem";
+            AtualizaPostagem.id = post.id;
+            postElement.appendChild(AtualizaPostagem);
+
+            AtualizaPostagem.addEventListener("click", function (event) {
+                event.preventDefault();
             
-            window.location.href = 'editar_postagem.html';
-        });
-        deletePostagemButton.addEventListener('click', function(event) {
-            event.preventDefault();
+                var clickedElement = event.target;
+    
+                console.log(clickedElement);
+    
+                var clickedId = clickedElement.id;
+    
+                localStorage.setItem("currentPostId", clickedId);
+            
+                window.location.href = 'editar_postagem.html';
+            });
+            deletePostagemButton.addEventListener('click', function(event) {
+                event.preventDefault();
         
-            var postagemId = post.id;
-            console.log(postagemId)
+                var postagemId = post.id;
+                console.log(postagemId)
         
-            fetch("http://localhost:8000/api/postagens/delete/"+ postagemId, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Falha ao deletar o fórum com ID: ' + postagemId);
-                }
-                return response.text(); // ou .text() se não houver retorno JSON
-            })
-            .then(data => {
-                console.log('Fórum deletado com sucesso:', data);
-                // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
-            })
-            .catch(error => console.error('Erro:', error));
-            window.reload
-        
-        });
+                fetch("http://localhost:8000/api/postagens/delete/"+ postagemId, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Falha ao deletar o fórum com ID: ' + postagemId);
+                    }
+                    return response.text(); // ou .text() se não houver retorno JSON
+                })
+                .then(data => {
+                    console.log('Fórum deletado com sucesso:', data);
+                    // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
+                })
+                .catch(error => console.error('Erro:', error));
+                window.reload
+            });
+        }
 
         var createCommentButton = document.createElement('button');
         createCommentButton.textContent = 'Criar Comentário';
@@ -163,6 +166,20 @@ async function getcomentariosById(id, postElement){
         console.error('Erro:', error);
     }
 }
+async function getCurrentUsername() {
+    let token = localStorage.getItem("token"); // Obter o token do localStorage
+    if (!token) {
+        return null; // Se não houver token, retornar null
+    }
+    try {
+        let username = await getUsernameByToken(token); // Usar a função existente para obter o nome de usuário
+        return username;
+    } catch (error) {
+        console.error('Erro ao obter o nome de usuário:', error);
+        return null; // Em caso de erro, retornar null
+    }
+}
+
 
 // Exemplo de uma função para criar elementos de comentário
 async function createCommentElement(comment) {
@@ -183,64 +200,62 @@ async function createCommentElement(comment) {
     commentDate.textContent = 'Data: ' + comment.data_criacao;
     commentDiv.appendChild(commentDate);
 
-    var atualizarComentarioButton = document.createElement("button");
-    atualizarComentarioButton.style = "text0decoration: none !important";
-    atualizarComentarioButton.textContent = "Atualizar Comentario";
-    atualizarComentarioButton.id = comment.id;
-    commentDiv.appendChild(atualizarComentarioButton);
+    let currentUsername = await getCurrentUsername();
+    let Authorcomment = await getUsernameByToken(comment.autor);
+    if (currentUsername === Authorcomment) {
 
-    atualizarComentarioButton.addEventListener("click", function (event) {
-        event.preventDefault();
+        var atualizarComentarioButton = document.createElement("button");
+        atualizarComentarioButton.style = "text0decoration: none !important";
+        atualizarComentarioButton.textContent = "Atualizar Comentario";
+        atualizarComentarioButton.id = comment.id;
+        commentDiv.appendChild(atualizarComentarioButton);
+
+        atualizarComentarioButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            
+            var clickedElement = event.target;
+
+            console.log(clickedElement);
+
+            var clickedId = clickedElement.id;
+
+            localStorage.setItem("currentcomentariotId", clickedId);
+            
+            window.location.href = 'editar_comentario.html';
+        });
+
+        var deleteComentarioButton = document.createElement("button");
+        deleteComentarioButton.style = "text0decoration: none !important";
+        deleteComentarioButton.textContent = "Excluir Comentario";
+        deleteComentarioButton.id = comment.id;
+        commentDiv.appendChild(deleteComentarioButton);
+
+        deleteComentarioButton.addEventListener('click', function(event) {
+            event.preventDefault();
         
-        var clickedElement = event.target;
-
-        console.log(clickedElement);
-
-        var clickedId = clickedElement.id;
-
-        localStorage.setItem("currentcomentariotId", clickedId);
+            var comentarioId = comment.id;
+            console.log(comment.id)
         
-        window.location.href = 'editar_comentario.html';
-    });
+            fetch("http://localhost:8000/api/comentarios/delete/"+ comentarioId, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Falha ao deletar o fórum com ID: ' + comentarioId);
+                }
+                return response.text(); // ou .text() se não houver retorno JSON
+            })
+            .then(data => {
+                console.log('Comentario deletado com sucesso:', data);
+                // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
+            })
+            .catch(error => console.error('Erro:', error));
+            location.reload();
 
-    var deleteComentarioButton = document.createElement("button");
-    deleteComentarioButton.style = "text0decoration: none !important";
-    deleteComentarioButton.textContent = "Excluir Comentario";
-    deleteComentarioButton.id = comment.id;
-    commentDiv.appendChild(deleteComentarioButton);
-
-    deleteComentarioButton.addEventListener('click', function(event) {
-        event.preventDefault();
-    
-        var comentarioId = comment.id;
-        console.log(comment.id)
-    
-        fetch("http://localhost:8000/api/comentarios/delete/"+ comentarioId, {
-            method: 'DELETE',
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Falha ao deletar o fórum com ID: ' + comentarioId);
-            }
-            return response.text(); // ou .text() se não houver retorno JSON
-        })
-        .then(data => {
-            console.log('Comentario deletado com sucesso:', data);
-            // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
-        })
-        .catch(error => console.error('Erro:', error));
-        location.reload();
-
-    
-    });
-
-
-    return commentDiv;
-}
-function AutorizacaoUsuario(){
-    token = localStorage.getItem("token")
-
-
+        
+        });
+        return commentDiv;
+    }
 }
 // Carregue detalhes da postagem e comentários quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', function () {
