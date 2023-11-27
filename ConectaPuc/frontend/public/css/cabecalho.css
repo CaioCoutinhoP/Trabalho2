@@ -1,12 +1,15 @@
 /* Estilo geral do corpo */
 body {
+    background-color: lightsalmon;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
+    height: 50px;
+    display: block;
     align-items: center;
     justify-content: start;
     flex-wrap: wrap;
+    box-sizing: border-box;
 }
 
 /* Estilo dos links */

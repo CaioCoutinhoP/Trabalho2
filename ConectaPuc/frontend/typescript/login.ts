@@ -28,7 +28,7 @@ onload = () => {
         .then((data: { token: string }) => {
             const token: string = data.token;
             localStorage.setItem('token', token);
-            window.location.replace('base.html');
+            window.location.replace('listar_foruns.html');
 
         })
         .catch(erro => { console.log(erro) })

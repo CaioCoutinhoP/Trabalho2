@@ -1,7 +1,7 @@
 window.addEventListener('load', () => {
     const token = localStorage.getItem('token');
     const backendAddress = 'http://127.0.0.1:8000/';
-    
+
     fetch(backendAddress + 'contas/token-auth', {
         method: 'GET',
         headers: {
@@ -9,16 +9,15 @@ window.addEventListener('load', () => {
         }
     })
     .then(response => {
-        response.json().then(data => {
+        response.json().then((data: { username }) => { // Assume the data has a username property
             const usuario = data;
 
-            // Verifica se os elementos existem no DOM antes de acessar propriedades
-            const objLogged = document.getElementById('logged');
-            const objUnlogged = document.getElementById('unlogged');
-            const spanElement = document.getElementById('identificacao');
+            // Type assertions for DOM elements
+            const objLogged = document.getElementById('logged') as HTMLDivElement | null;
+            const objUnlogged = document.getElementById('unlogged') as HTMLDivElement | null;
+            const spanElement = document.getElementById('identificacao') as HTMLSpanElement | null;
 
             if (response.ok) {
-                // Exibe ou oculta os elementos conforme necessário
                 if (objLogged && objUnlogged) {
                     objLogged.classList.remove('invisivel');
                     objLogged.classList.add('visivel');
@@ -40,7 +39,7 @@ window.addEventListener('load', () => {
             }
         });
     })
-    .catch(erro => {
-        console.log('[setLoggedUser] deu erro: ' + erro);
+    .catch((erro: Error) => {
+        console.log('[setLoggedUser] deu erro: ' + erro.message);
     });
 });

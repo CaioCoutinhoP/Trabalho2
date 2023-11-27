@@ -35,7 +35,7 @@ function create_post() {
                 console.error(error);
                 msg.innerHTML = "Erro durante a criação do post. Por favor, tente novamente.";
             });
-            window.location.href = "visualizar_postagens.html";
+            window.location.href = "listar_postagens.html";
 
         });
     }

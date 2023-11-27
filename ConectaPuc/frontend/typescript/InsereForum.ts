@@ -1,26 +1,45 @@
-onload = () => {
-    (document.getElementById('insere') as HTMLButtonElement).addEventListener('click', evento => {
-        evento.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+    const criarForumForm = document.getElementById('criar-forum-form') as HTMLFormElement | null;
+    const backendAddress = 'http://127.0.0.1:8000/';
 
-        const elements = (document.getElementById('meuFormulario') as HTMLFormElement).elements;
-        let data: Record<string, string> = {};
-        for (let i = 0; i < elements.length; i++) {
-            const element = elements[i] as HTMLInputElement;
-            data[element.name] = element.value;
-        }
+    if (criarForumForm) {
+        criarForumForm.addEventListener('submit', async (event: Event) => {
+            event.preventDefault();
 
-        fetch(backendAddress + "api/forums/create/", {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: { 'Content-Type': 'application/json' }
-        })
-        .then(response => {
-            if (response.ok) {
-                (document.getElementById('mensagem') as HTMLDivElement).innerHTML = 'Fórum criado com sucesso';
-            } else {
-                (document.getElementById('mensagem') as HTMLDivElement).innerHTML = 'Erro ao criar o fórum';
+            const formData = new FormData(criarForumForm);
+
+            try {
+                const response = await fetch(backendAddress + 'api/foruns/create/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken(),
+                    },
+                    body: JSON.stringify({
+                        nome: formData.get('nome'),
+                        descricao: formData.get('descricao'),
+                    }),
+                });
+
+                if (response.ok) {
+                    console.log('Fórum criado com sucesso!');
+                    window.location.href = "listar_foruns.html";
+                } else {
+                    console.error('Erro ao criar o fórum:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Erro ao criar o fórum:', error);
             }
-        })
-        .catch(error => { console.log(error) });
-    });
+        });
+    }
+});
+
+function getCSRFToken(): string {
+    const csrfTokenInput = document.querySelector('input[name=csrfmiddlewaretoken]') as HTMLInputElement | null;
+    if (csrfTokenInput) {
+        return csrfTokenInput.value;
+    } else {
+        console.error('CSRF token não encontrado no formulário.');
+        return '';
+    }
 }

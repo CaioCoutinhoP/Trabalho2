@@ -1,1 +1,3 @@
-const backendAddress = 'http://127.0.0.1:8000/';
+// constantes.ts
+const API_URL: string = "http://localhost:8000/api/";
+const TOKEN_KEY: string = "token";

@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Seu código existente para carregar os fóruns
     var forumList
-    // Exemplo de chamada a uma função para carregar os fóruns
     loadForums();
 });
 
@@ -42,9 +40,6 @@ function createForumElement(forum) {
     titlePost.textContent = forum.nome;
     cardBody.appendChild(titlePost);
 
-    var hr = document.createElement('hr');
-    cardBody.appendChild(hr);
-
     var bodyPost = document.createElement('pre');
     bodyPost.className = 'card-text text-bg-dark';
     bodyPost.textContent = forum.descricao;
@@ -71,7 +66,7 @@ function createForumElement(forum) {
     var forumLink = document.createElement('p');
     forumLink.style = 'text-decoration: none !important';
     forumLink.className = 'link-dark';
-    forumLink.href = 'visualizar_postagens.html';
+    forumLink.href = 'listar_postagens.html';
 
 
     titlePost.addEventListener('click', function (event) {

@@ -34,7 +34,7 @@ function create_comment() {
                 console.error(error);
                 commentMsg.innerHTML = "Erro durante a criação do comentário. Por favor, tente novamente.";
             });
-            window.location.href = "visualizar_postagens.html";
+            window.location.href = "listar_postagens.html";
 
         });
     }

@@ -2,20 +2,11 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: black;
 }
 
 main {
     padding: 20px;
-}
-
-.container {
-    width: 80%;
-    margin: 0 auto;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    border-radius: 10px;
 }
 
 #postsContainer, #comments {
@@ -108,7 +99,7 @@ button {
     background-color: #007bff;
     color: white;
     padding: 5px 10px;
-    margin: 5px 0;
+    margin: 5px 2px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -117,4 +108,8 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+h1 {
+    text-align: center;
 }

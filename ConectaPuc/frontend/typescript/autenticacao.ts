@@ -1,39 +1,45 @@
 window.addEventListener('load', () => {
-    // Verifica o username e coloca no cabeçalho da página
-    const token = localStorage.getItem('token'); // Recupera o token de autenticação
+    const token = localStorage.getItem('token');
     const backendAddress = 'http://127.0.0.1:8000/';
+
     fetch(backendAddress + 'contas/token-auth', {
-    method: 'GET',
-    headers: {
-    'Authorization': 'Bearer ' + token // Reenvia o token no cabeçalho HTTP
-    }
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
     })
     .then(response => {
-        response.json().then(data => {
-        const usuario = data;
-        if(response.ok) {
-        // token enviado no cabeçalho foi aceito pelo servidor
-        let objDiv = (document.getElementById('logged') as HTMLDivElement);
-        objDiv.classList.remove('invisivel');
-        objDiv.classList.add('visivel');
-        objDiv = (document.getElementById('unlogged') as HTMLDivElement);
-        objDiv.classList.remove('visivel');
-        objDiv.classList.add('invisivel');
-        } else {
-            // token enviado no cabeçalho foi rejeitado pelo servidor
-            usuario.username = 'visitante'
-            let objDiv = (document.getElementById('unlogged') as HTMLDivElement);
-            objDiv.classList.remove('invisivel');
-            objDiv.classList.add('visivel');
-            objDiv = (document.getElementById('logged') as HTMLDivElement);
-            objDiv.classList.remove('visivel');
-            objDiv.classList.add('invisivel');
+        response.json().then((data: { username: string }) => { // Assume the data has a username property
+            const usuario = data;
+
+            // Type assertions for DOM elements
+            const objLogged = document.getElementById('logged') as HTMLDivElement | null;
+            const objUnlogged = document.getElementById('unlogged') as HTMLDivElement | null;
+            const spanElement = document.getElementById('identificacao') as HTMLSpanElement | null;
+
+            if (response.ok) {
+                if (objLogged && objUnlogged) {
+                    objLogged.classList.remove('invisivel');
+                    objLogged.classList.add('visivel');
+                    objUnlogged.classList.remove('visivel');
+                    objUnlogged.classList.add('invisivel');
+                }
+            } else {
+                if (objLogged && objUnlogged) {
+                    objUnlogged.classList.remove('invisivel');
+                    objUnlogged.classList.add('visivel');
+                    objLogged.classList.remove('visivel');
+                    objLogged.classList.add('invisivel');
+                }
+                usuario.username = 'visitante';
             }
-            const spanElement = document.getElementById('identificacao') as HTMLSpanElement;
-            spanElement.innerHTML = usuario.username;
-            })
-            })
-            .catch(erro => {
-            console.log('[setLoggedUser] deu erro: ' + erro);
-            });
+
+            if (spanElement) {
+                spanElement.innerHTML = usuario.username;
+            }
+        });
+    })
+    .catch((erro: Error) => {
+        console.log('[setLoggedUser] deu erro: ' + erro.message);
     });
+});
