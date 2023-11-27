@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function loadForums() {
     const backendAddress = 'http://127.0.0.1:8000/';
-    fetch(backendAddress + 'api/foruns/list', {
+    fetch(backendAddress , {
         method: 'GET',
     }).then(function (response) {
         response.json().then(function (forums) {
@@ -53,7 +53,7 @@ function createForumElement(forum) {
     var footerPost = document.createElement('div');
     footerPost.className = 'card-footer text-muted text-bg-dark';
 
-    var editForumLink = document.createElement("a");
+    var editForumLink = document.createElement("button");
     editForumLink.style = "text-decoration: none !important";
     editForumLink.href = "edit_forum.html"; 
     editForumLink.textContent = "Editar";

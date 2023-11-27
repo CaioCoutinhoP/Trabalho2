@@ -1,0 +1,38 @@
+/* Estilo geral do corpo */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+
+/* Estilo dos links */
+a {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    border: 1px solid #000;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Efeito de hover nos links */
+a:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Estilo para as divisões com class 'mesmaLinha', 'visivel' e 'invisivel' */
+.mesmaLinha, .visivel, .invisivel {
+    display: inline;
+}
+
+/* Estilo para esconder elementos com class 'invisivel' */
+.invisivel {
+    display: none;
+}

@@ -38,7 +38,7 @@ schema_view = yasg_schema_view(
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('api/foruns/create/', views.ForumCreateView.as_view(), name='forum-create'),
-    path('api/foruns/list', views.ForumListView.as_view(), name='forum-list'),
+    path('', views.ForumListView.as_view(), name='forum-list'),
     path('api/foruns/update/<int:pk>/', views.ForumUpdateView.as_view(), name='forum-update'),
     path('api/foruns/delete/<int:pk>', views.ForumDeleteView.as_view(), name='forum-delete'),
     ###############

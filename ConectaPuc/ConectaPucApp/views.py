@@ -1,6 +1,7 @@
 from django.http import Http404
 from ConectaPucApp.serializers import ConectaPucSerializer
 from rest_framework.views import APIView
+from django.views.generic import TemplateView
 from .models import Postagem, Forum, Comentario
 from rest_framework.response import Response
 from rest_framework import status
@@ -15,7 +16,6 @@ from rest_framework.decorators import authentication_classes
 
 # @authentication_classes([TokenAuthentication])
 # @permission_classes([IsAuthenticated])
-
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
@@ -162,7 +162,6 @@ class PostagemCreateView(APIView):
     
 
 class PostagemUpdateView(APIView):
-    # permission_classes = [IsAuthenticated]
     @swagger_auto_schema(
             operation_summary="Atualiza Postagem", operation_description="Atualiza título e Conteúdo da Postagem",
             request_body=openapi.Schema(
@@ -200,8 +199,6 @@ class PostagemUpdateView(APIView):
         
 
 class PostagemDeleteView(APIView):
-    # authentication_classes = [TokenAuthentication]  # Use Token Authentication (ou outra autenticação de sua escolha)
-    # permission_classes = [IsAuthenticated]  # Apenas usuários autenticados podem acessar a visualização
     @swagger_auto_schema(
             operation_summary="Remove uma postagem",
             operation_description="Remove uma postagem.",

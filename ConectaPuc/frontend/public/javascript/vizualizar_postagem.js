@@ -46,7 +46,8 @@ async function displayPostDetails(post) {
 
         let currentUsername = await getCurrentUsername();
         let postAuthor = await getUsernameByToken(post.autor);
-        if (currentUsername === postAuthor) {
+        if (currentUsername === postAuthor || currentUsername === "admin") {
+
             var deletePostagemButton = document.createElement("button");
             deletePostagemButton.style = "text0decoration: none !important";
             deletePostagemButton.textContent = "Excluir Postagem";
@@ -93,7 +94,7 @@ async function displayPostDetails(post) {
                     // Aqui você pode adicionar código para atualizar a UI após a exclusão bem-sucedida
                 })
                 .catch(error => console.error('Erro:', error));
-                window.reload
+                location.reload();
             });
         }
 
@@ -202,7 +203,7 @@ async function createCommentElement(comment) {
 
     let currentUsername = await getCurrentUsername();
     let Authorcomment = await getUsernameByToken(comment.autor);
-    if (currentUsername === Authorcomment) {
+    if (currentUsername === Authorcomment || currentUsername === "admin") {
 
         var atualizarComentarioButton = document.createElement("button");
         atualizarComentarioButton.style = "text0decoration: none !important";
