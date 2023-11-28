@@ -1,29 +1,38 @@
-window.onload = function (){
-  const atualizaButton = document.getElementById('atualiza');
-  if (atualizaButton) {
-      atualizaButton.addEventListener('click', function (evento) {
-          evento.preventDefault();
-
-          const tituloElement = document.getElementById("nome");
-          const conteudoElement = document.getElementById("descricao");
-          const currentPostId = localStorage.getItem("currentPostId");
-
-          // console.log(nome + "_" + descricao + "_" + id_forum);
-
-          if (currentPostId && tituloElement && conteudoElement) {
-              const titulo = tituloElement.value;
-              const conteudo = conteudoElement.value;
-
-              fetch("http://localhost:8000/api/postagens/update/" + currentPostId + "/", {
-                  method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ 
-                      "titulo": titulo,
-                      "conteudo": conteudo
-                  }),
-              });
-          }
-          window.location.href = "listar_postagens.html";
-      });
-  }
-};
+onload = () => {
+    (document.getElementById('atualiza') as HTMLButtonElement).addEventListener('click', (evento) => {
+      evento.preventDefault();
+      
+      // Busque o ID da postagem do atributo personalizado
+      const postagemElement = document.getElementById('postagem');
+      
+      if (postagemElement) {
+        const postagemID = postagemElement.getAttribute('data-postagem-id');
+      
+        const form = document.getElementById('meuFormulario') as HTMLFormElement;
+        const elements = form.elements;
+        let data: Record<string, string> = {};
+      
+        for (let i = 0; i < elements.length; i++) {
+          const element = elements[i] as HTMLInputElement;
+          data[element.name] = element.value;
+        }
+      
+        fetch(`/api/postagens/update/${postagemID}/`, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: { 'Content-Type': 'application/json' },
+        })
+          .then(response => {
+            if (response.ok) {
+              (document.getElementById('mensagem') as HTMLDivElement).innerHTML = 'Sucesso';
+            } else {
+              (document.getElementById('mensagem') as HTMLDivElement).innerHTML = 'Erro: ' + response.status + ' ' + response.statusText;
+            }
+          })
+          .catch(erro => {
+            console.log('Deu erro: ' + erro);
+          });
+      }
+    });
+  };
+  
