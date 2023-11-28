@@ -25,7 +25,7 @@ function create_comment() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "autor": token,
+                    "autor": localStorage.getItem("username"),
                     "postagem": parseInt(postId),
                     "texto": commentBody
                 }),

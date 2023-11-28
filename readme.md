@@ -34,10 +34,11 @@ Desenvolvemos um site que permite, ao usuário comum, realizar a publicação em
 
  - Clique em criar publicação, adicione um título e um conteúdo, e depois aperte o botão para publicar
 
- ![Página de criação](./images/criacao_forum.png)
-
 
  - Alternativamente, também pode clicar em comentar na publicação de outras pessoas, ou na sua própria.
+
+ 
+ ![Página de criação](./images/post_pages.png)
 
 
  - Qualquer publicação ou comentário feito por você pode ser deletado ou editado a qualquer momento.

@@ -29,7 +29,7 @@ function createPost(): void {
                     "forum": parseInt(forumAtual),
                     "titulo": title,
                     "conteudo": body,
-                    "autor": token
+                    "autor": localStorage.getItem("username")
                 }),
             })
             .catch(error => {

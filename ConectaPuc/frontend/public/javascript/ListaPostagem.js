@@ -36,7 +36,7 @@ async function displayPostDetails(post) {
 
         // Adicionar o autor da postagem
         var authorElement = document.createElement('p');
-        authorElement.textContent = 'Autor: ' + await getUsernameByToken(post.autor);
+        authorElement.textContent = 'Autor: ' + post.autor;
         postElement.appendChild(authorElement);
 
         // Adicionar a data de publicação
@@ -44,8 +44,8 @@ async function displayPostDetails(post) {
         dateElement.textContent = 'Data de Publicação: ' + post.data_postagem;
         postElement.appendChild(dateElement);
 
-        let currentUsername = await getCurrentUsername();
-        let postAuthor = await getUsernameByToken(post.autor);
+        let currentUsername = localStorage.getItem("username");
+        let postAuthor = post.autor;
         if (currentUsername === postAuthor || currentUsername === "admin") {
 
             var deletePostagemButton = document.createElement("button");
@@ -190,7 +190,7 @@ async function createCommentElement(comment) {
     // Crie elementos HTML para exibir os detalhes do comentário (por exemplo, autor, conteúdo, data, etc.)
     // Exemplo:
     var commentAuthor = document.createElement('p');
-    commentAuthor.textContent = 'Autor: ' + await getUsernameByToken(comment.autor);
+    commentAuthor.textContent = 'Autor: ' + comment.autor;
     commentDiv.appendChild(commentAuthor);
 
     var commentContent = document.createElement('p');
@@ -201,8 +201,8 @@ async function createCommentElement(comment) {
     commentDate.textContent = 'Data: ' + comment.data_criacao;
     commentDiv.appendChild(commentDate);
 
-    let currentUsername = await getCurrentUsername();
-    let Authorcomment = await getUsernameByToken(comment.autor);
+    let currentUsername = localStorage.getItem("username")
+    let Authorcomment = comment.autor;
     if (currentUsername === Authorcomment || currentUsername === "admin") {
 
         var atualizarComentarioButton = document.createElement("button");

@@ -30,6 +30,7 @@ onload = () => {
             .then((data) => {
             const token = data.token;
             localStorage.setItem('token', token);
+            localStorage.setItem("username", username);
             window.location.replace('listar_foruns.html');
         })
             .catch(erro => { console.log(erro); });

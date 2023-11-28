@@ -27,7 +27,7 @@ function create_post() {
                     "forum": parseInt(forumatual),
                     "titulo": title,
                     "conteudo": body,
-                    "autor": token
+                    "autor": localStorage.getItem("username")
                 }),
             })
 

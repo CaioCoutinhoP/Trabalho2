@@ -11,6 +11,8 @@ onload = (eventon) => {
             }
         })
         .then(response => {
+            localStorage.setItem("username", "Visitante");
+            localStorage.setItem("token", "");
             const mensagem = document.getElementById('mensagem') as HTMLDivElement;
             if (response.ok) window.location.assign('/');
             else mensagem.innerHTML = 'Erro ' + response.status;
