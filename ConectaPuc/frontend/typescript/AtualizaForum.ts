@@ -12,7 +12,7 @@ window.onload = function () {
         var id_forum = localStorage.getItem("id_forum");
 
         // Ensure that backendAddress is defined
-        var backendAddress = "http://your-backend-address/"; // Replace with your actual backend address
+        var backendAddress = "http://127.0.0.1/8000"; // Replace with your actual backend address
 
         if (id_forum) {
           fetch(backendAddress + "api/foruns/update/" + id_forum + '/', {
