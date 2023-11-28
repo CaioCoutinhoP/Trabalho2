@@ -1,10 +1,10 @@
 /* Estilo geral do corpo */
 body {
+    height: 20px;
     background-color: lightsalmon;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    height: 50px;
     display: block;
     align-items: center;
     justify-content: start;
@@ -38,4 +38,23 @@ a:hover {
 /* Estilo para esconder elementos com class 'invisivel' */
 .invisivel {
     display: none;
+}
+
+.header-container {
+    height:60px;
+    display: flex;
+    align-items: center; /* Centers items vertically */
+    justify-content: start; /* Aligns items to the start (left) */
+    background-color: lightsalmon; /* Optional for styling */
+}
+
+.logo {
+    margin-right: 10px;
+    transform: scale(0.35);
+}
+
+.profile-icon {
+    margin-right: 10px;
+    transform: scale(0.25);
+    
 }

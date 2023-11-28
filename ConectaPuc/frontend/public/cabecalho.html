@@ -9,15 +9,22 @@
     <link rel="stylesheet" href="css/cabecalho.css">
 </head>
 <body>
-    <a href="listar_foruns.html" target="_top">Home</a>
-    <div id="unlogged" class="visivel">
-        | <a href="login.html" target="_top">Login</a>
+    <link rel="stylesheet" href="css/cabecalho.css">
+    <div class="header-container">
+        <img src="images/logo.png" alt="Logo" class="logo"></img>
+        <div class="nav-links">
+            <a href="listar_foruns.html" target="_top">Home</a>
+            <div id="unlogged" class="visivel">
+                | <a href="login.html" target="_top">Login</a>
+            </div>
+            <div id="logged" class="invisivel">
+                | <a href="passwordChange.html" target="_top">Troca senha</a>
+                | <a href="listar_foruns.html" target="_top" id="logout">Logout</a>
+            </div>
+            | Você é 
+            <div id="identificacao" class="mesmaLinha">visitante</div>
+        </div>
+        <img src="images/profile.png" alt="Profile" class="profile-icon">
     </div>
-    <div id="logged" class="invisivel">
-        | <a href="passwordChange.html" target="_top">Troca senha</a>
-        | <a href="listar_foruns.html" target="_top" id="logout">Logout</a>
-    </div>
-    | Você é <div id="identificacao" class="mesmaLinha">visitante</div>
-    <hr>
 </body>
 </html>

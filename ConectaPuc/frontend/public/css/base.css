@@ -1,13 +1,25 @@
 iframe {
-    height: 70px;
+    height: 60px;
 }
 
 body {
-    background-color: black;
+    background-color: black;    
+    background-image: url("../images/pucrio.jpg");
+    background-size: cover;
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Keep the image fixed in place while scrolling */
 }
 
 h1 {
     color: white;
+    text-align: center;
+    border: 2px solid lightsalmon;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: black;
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .container {
