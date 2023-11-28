@@ -6,6 +6,9 @@ Projeto 2 da matéria Programação para Web da PUC-Rio. O projeto tem como obje
 Caio Coutinho - 1921044
 Paulo Vianna - 2020704
 
+## Links:
+Backend: paulean.pythonanywhere.com
+
 ## Escopo do Site:
 
 Desenvolvemos um site que permite, ao usuário comum, realizar a publicação em fóruns, comentar em posts e deletar e editar seus próprios comentários e posts, e aos administradores, criar fóruns, deletar posts e comentários de qualquer pessoa.
