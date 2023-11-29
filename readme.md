@@ -7,7 +7,8 @@ Caio Coutinho - 1921044
 Paulo Vianna - 2020704
 
 ## Links:
-Backend: paulean.pythonanywhere.com
+Backend: https://conectapucv2-9ee7c697e1e1.herokuapp.com/?format=api
+Frontend: https://conectapuc-frontend-480415e3c80b.herokuapp.com/
 
 ## Escopo do Site:
 
