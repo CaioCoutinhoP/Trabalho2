@@ -8,7 +8,14 @@ Paulo Vianna - 2020704
 
 ## Links:
 Backend: https://conectapucv2-9ee7c697e1e1.herokuapp.com/?format=api
+
 Frontend: https://conectapuc-frontend-480415e3c80b.herokuapp.com/
+
+# Frontend and Backend projects (split):
+
+Backend: https://github.com/ThePaulean/inf1407-backend
+
+Frontend: https://github.com/ThePaulean/INF1407-Frontend
 
 ## Escopo do Site:
 
